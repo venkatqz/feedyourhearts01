@@ -1,0 +1,18 @@
+body{
+    background-color: rgb(231, 254, 254);
+}
+/* Custom navbar background color */
+.custom-navbar {
+    background-color: #678168; /* Replace with your desired color */
+  }
+  
+  /* Optional: Change text color for better visibility */
+  .custom-navbar .navbar-brand,
+  .custom-navbar .nav-link {
+    color: rgb(40, 34, 34) !important; /* Ensure text is visible */
+  }
+  
+  .custom-navbar .nav-link:hover {
+    color: #323028; /* Hover color for links */
+  }
+  
