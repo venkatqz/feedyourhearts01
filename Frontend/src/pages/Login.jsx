@@ -26,24 +26,27 @@ function Login() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+        const response = await axios.post(
+          'http://localhost:5000/api/auth/login',
+          formData,
+          { withCredentials: true } // Include cookies in the request
+        );
+
         setSuccessMessage(response.data.message);
 
-        // Store JWT in sessionStorage
-        const { token, userType } = response.data;
-        sessionStorage.setItem('token', token); // Store the token
-        sessionStorage.setItem('userType', userType); // Store the user type
+        const { userType } = response.data; // No need to manually store the token, it's in cookies now.
         console.log(userType);
+
         
         // Redirect based on user type
-        if( token ){
+        
         if (userType === 'orphanage' ) {
           navigate('/food-reqform');
         } else if (userType === 'donor') {
           
           navigate('/donation-form');
         }
-      }
+      
       } catch (error) {
         setErrorMessages({ server: error.response?.data?.error || 'Invalid login credentials!' });
       }
@@ -94,3 +97,4 @@ function Login() {
 }
 
 export default Login;
+
