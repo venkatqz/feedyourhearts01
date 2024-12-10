@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = sessionStorage.getItem('token'); // Get token from sessionStorage
-      if (!token) {
-        navigate('/login'); // Redirect to login if no token
-        return;
-      }
-
       try {
-        // Use an existing protected route for token validation
-        await axios.get('http://localhost:5000/api/protected-resource', {
-          headers: { Authorization: `Bearer ${token}` },
+        // Use an existing protected route for session validation
+        await axios.get("http://localhost:5000/api/protected-resource", {
+          withCredentials: true, // Send cookies with the request
         });
       } catch (error) {
-        sessionStorage.clear(); // Clear session storage if token is invalid
-        navigate('/login'); // Redirect to login
+        console.error("Authentication error:", error.message);
+        navigate("/login"); // Redirect to login if authentication fails
       }
     };
 

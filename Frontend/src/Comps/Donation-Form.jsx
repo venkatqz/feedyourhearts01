@@ -6,7 +6,7 @@ function Donation_Form() {
   const [servings, setServings] = useState('');
 
   useEffect((e)=>{if(servings<0){setServings(0)}},[servings]);
-11
+
   const handleFoodTypeChange = (e) => {
     setFoodType(e.target.value);
     if (e.target.value !== 'preparedFood') {

@@ -48,6 +48,10 @@ function SignUp() {
       if (!formData.contact || !/^\d{10}$/.test(formData.contact)) {
         errors.contact = 'A valid 10-digit contact number is required.';
       }
+
+      if (!formData.aadharNumber || !/^\d{12}$/.test(formData.aadharNumber)) {
+        errors.aadharNumber = 'Aadhar Number must be exactly 12 digits.';
+      }
     } else if (formType === 'orphanage') {
       if (!formData.orphanageName || formData.orphanageName.trim() === '') {
         errors.orphanageName = 'Orphanage Name is required.';
@@ -153,6 +157,20 @@ function SignUp() {
                 onChange={handleInputChange}
               />
               {errorMessages.contact && <p className="text-danger">{errorMessages.contact}</p>}
+            </Form.Group>
+
+            <Form.Group controlId="aadharNumber">
+              <Form.Label>Aadhar Number</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your 12-digit Aadhar number"
+                name="aadharNumber"
+                value={formData.aadharNumber || ''}
+                onChange={handleInputChange}
+              />
+              {errorMessages.aadharNumber && (
+                <p className="text-danger">{errorMessages.aadharNumber}</p>
+              )}
             </Form.Group>
 
             <Form.Group controlId="donorAddress">

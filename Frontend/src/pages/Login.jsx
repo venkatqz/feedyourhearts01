@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../App';
 
 function Login() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({});
   const [errorMessages, setErrorMessages] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
+
+  const { conUser, setUser } = useContext(UserContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,8 +39,8 @@ function Login() {
         setSuccessMessage(response.data.message);
 
         const { userType } = response.data; // No need to manually store the token, it's in cookies now.
-        console.log(userType);
-
+        setUser(response.data);
+        //console.log(conUser,userType,response.data);
         
         // Redirect based on user type
         
@@ -44,7 +48,7 @@ function Login() {
           navigate('/food-reqform');
         } else if (userType === 'donor') {
           
-          navigate('/donation-form');
+          navigate('/req-list');
         }
       
       } catch (error) {

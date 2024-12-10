@@ -22,7 +22,7 @@ function MyNav() {
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/signup">SignUp</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/request-list" >Requsts List </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/food-reqform" >Requsts Form </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown>

@@ -7,6 +7,7 @@ const router = express.Router();
 const app = express();
 app.use(express.json());
 
+
 const Secret_key = 'venanpraveenragul';
 
 // Middleware for Token Validation
@@ -47,11 +48,16 @@ const handleSignup = async (req, res, type) => {
       email,
       password,
       contact,
+      aadharNumber,
       orphanageName,
       registrationNumber,
       authorizedPerson,
       address,
     } = req.body;
+
+    if (type === 'donor' && (!aadharNumber || !/^\d{12}$/.test(aadharNumber))) {
+      return res.status(400).json({ error: 'Invalid Aadhar number. Must be 12 digits.' });
+    }
 
     const existingUser = await User.findOne({ email });
     const existingOrphanage = await Orphanage.findOne({ email });
@@ -72,6 +78,7 @@ const handleSignup = async (req, res, type) => {
         email,
         password: hashedPassword,
         contact,
+        aadharNumber,
         address,
         type,
       });
@@ -185,4 +192,29 @@ router.get('/protected-resource', authenticateToken, (req, res) => {
   });
 });
 
-module.exports = router;
+
+router.get('/user-info', authenticateToken, async (req, res) => {
+  try {
+    const { id, userType } = req.user;
+
+    // Find the user based on their type
+    let user;
+    if (userType === 'donor') {
+      user = await User.findById(id).select('-password'); // Exclude password from the response
+    } else if (userType === 'orphanage') {
+      user = await Orphanage.findById(id).select('-password'); // Exclude password from the response
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+module.exports=router;

@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   contact: { type: String, required: true, unique: true },
+  aadharNumber: { type: String, required: true, match: /^\d{12}$/, unique: true }, // New Aadhar field
   address: { type : String, required:true },
   type: { type: String, required: true, enum: ['donor', 'orphanage'] },
 });

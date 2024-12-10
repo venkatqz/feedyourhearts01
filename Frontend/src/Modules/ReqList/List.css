@@ -1,0 +1,210 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.maincontainer{
+  display:flex;
+  justify-content: space-between;
+}
+
+.containere {
+  display: flex;
+  /* height: 100vh; */
+  background-color: #f9f9f9;
+  flex-direction:column;
+  width: 70%;
+}
+
+.donation-list {
+  flex: 3;
+  padding: 20px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column; /* Ensure content stacks vertically */
+  gap: 20px; /* Add space between the filter-bar and the list */
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Search Bar */
+.search-bar {
+   width: 75%; /*Adjusted width for search bar */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #7b4a7e;
+  box-shadow: 0 0 4px #7b4a7e;
+}
+
+.dropdown {
+  /* width: 20%; Adjust width for dropdown */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.orphanage {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+max-width: 720px;
+/* min-width: 100%; */
+} 
+
+.orphanage:hover {
+  transform: scale(1.02);
+}
+
+.orphanage h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.details-row .label {
+  font-weight: bold;
+}
+
+.required {
+  color: red;
+  font-weight: bold;
+}
+
+.fulfilled {
+  color: green;
+  font-weight: bold;
+}
+
+.donor-info {
+  /* flex: 1; */
+position: fixed;
+right: 0;
+top:0;
+
+/* height: 100%; */
+/* height: max-content; */
+  background-color: #d3a6d6;
+  padding: 20px;
+  text-align: center;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width:25%;
+    align-self: flex-end;
+  /* align-self: baseline; */
+  
+}
+
+.greeting h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0;
+  color: #4a235a;
+}
+
+.donor-details h3 {
+  margin: 10px 0 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.donor-details p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.thank-you {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #944d80;
+  font-weight: bold;
+}
+.orphanage {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  position: relative;
+}
+
+.orphanage:hover {
+  transform: scale(1.02);
+}
+
+.orphanage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-right-info {
+  display: flex;
+  gap: 10px; /* Add spacing between location and food type */
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.top-right-info p {
+  margin: 0;
+  font-weight: bold;
+}
+
+
+.orphanage h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.details-row .label {
+  font-weight: bold;
+}
+
+.required {
+  color: red;
+  font-weight: bold;
+}
+
+.fulfilled {
+  color: green;
+  font-weight: bold;
+}
+
+
