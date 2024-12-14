@@ -8,7 +8,7 @@ const HeroSection = () => {
       <div className="text-content">
         <h2>
           Feeding the people’s <br />
-          hungry by <span>your</span> hands <br />
+          hunger by <span>your</span> hands <br />
           then fulfill <span>your</span> heart...
         </h2>
       </div>

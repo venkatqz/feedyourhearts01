@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useContext,useState } from 'react';
 import { UserContext } from '../App';
-
+import logo from './logout_24dp_000000_FILL0_wght400_GRAD0_opsz24.png'
+import Cookies from 'js-cookie';
 function Footer() {
 
     const {conuser,setUser
@@ -31,7 +32,7 @@ function Footer() {
     <footer>
         <div>
             {conuser?
-            <p id="log-out" onClick={logoutfn}> Log - Out</p> :null
+            <button id="log-out" onClick={logoutfn}> <img src={logo} alt="dropdown-logo" style={{ width: '20px', height: '20px', padding:'0' }} /></button> :null
 }
         </div>
     </footer>

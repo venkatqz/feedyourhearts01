@@ -26,7 +26,7 @@ mongoose.connect('mongodb://localhost:27017/feedyourhearts', {
 // Routes
 
 
-app.get('/request-list', async (req, res) => { try { const foodRequests = await FoodRequest.find(); res.status(200).json(foodRequests); } catch (error) { console.error("Error retrieving food requests:", error); res.status(500).json({ message: "An error occurred while retrieving food requests. Please try again." }); } });
+app.get('/request-list', authenticateToken,async (req, res) => { try { const foodRequests = await FoodRequest.find(); res.status(200).json(foodRequests); } catch (error) { console.error("Error retrieving food requests:", error); res.status(500).json({ message: "An error occurred while retrieving food requests. Please try again." }); } });
 
 
 app.post("/food-requests", async (req, res) => {
