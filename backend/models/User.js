@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   contact: { type: String, required: true, unique: true },
   aadharNumber: { type: String, required: true, match: /^\d{12}$/, unique: true }, // New Aadhar field
   address: { type : String, required:true },
+  district:{type:String, required:true},
   type: { type: String, required: true, enum: ['donor', 'orphanage'] },
 });
 
@@ -24,6 +25,7 @@ const orphanageSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   contact: { type: String, required: true, unique: true },
   address: { type: String, required: true },
+  district:{type:String, required:true},
   password: { type: String, required: true },
   type: { type: String, default: 'orphanage' },
 });

@@ -4,6 +4,15 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
+  const districts = [
+    'Ariyalur', 'Chengalpattu', 'Chennai', 'Coimbatore', 'Cuddalore', 'Dharmapuri',
+    'Dindigul', 'Erode', 'Kallakurichi', 'Kancheepuram', 'Karur', 'Krishnagiri',
+    'Madurai', 'Mayiladuthurai', 'Nagapattinam', 'Namakkal', 'Nilgiris', 'Perambalur',
+    'Pudukkottai', 'Ramanathapuram', 'Ranipet', 'Salem', 'Sivaganga', 'Tenkasi',
+    'Thanjavur', 'Theni', 'Thoothukudi', 'Tiruchirappalli', 'Tirunelveli', 'Tirupathur',
+    'Tiruppur', 'Tiruvallur', 'Tiruvannamalai', 'Tiruvarur', 'Vellore', 'Viluppuram',
+    'Virudhunagar'
+  ];
   const [formType, setFormType] = useState('donor'); // Default form type
   const [formData, setFormData] = useState({});
   const [errorMessages, setErrorMessages] = useState({});
@@ -48,6 +57,9 @@ function SignUp() {
       if (!formData.contact || !/^\d{10}$/.test(formData.contact)) {
         errors.contact = 'A valid 10-digit contact number is required.';
       }
+      if (!formData.aadharNumber || !/^\d{12}$/.test(formData.aadharNumber)) {
+        errors.aadharNumber = 'Aadhar Number must be exactly 12 digits.';
+      }
     } else if (formType === 'orphanage') {
       if (!formData.orphanageName || formData.orphanageName.trim() === '') {
         errors.orphanageName = 'Orphanage Name is required.';
@@ -71,6 +83,9 @@ function SignUp() {
       if (!formData.address || formData.address.trim() === '') {
         errors.address = 'Address is required.';
       }
+      if (!formData.district || formData.district === '') {
+        errors.district = 'Please select a district.';
+      }
     }
 
     setErrorMessages(errors);
@@ -154,6 +169,20 @@ function SignUp() {
               />
               {errorMessages.contact && <p className="text-danger">{errorMessages.contact}</p>}
             </Form.Group>
+            
+            <Form.Group controlId="aadharNumber">
+              <Form.Label>Aadhar Number</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your 12-digit Aadhar number"
+                name="aadharNumber"
+                value={formData.aadharNumber || ''}
+                onChange={handleInputChange}
+              />
+              {errorMessages.aadharNumber && (
+                <p className="text-danger">{errorMessages.aadharNumber}</p>
+              )}
+            </Form.Group>
 
             <Form.Group controlId="donorAddress">
               <Form.Label>Address</Form.Label>
@@ -167,6 +196,28 @@ function SignUp() {
               />
               {errorMessages.address && <p className="text-danger">{errorMessages.address}</p>}
             </Form.Group>
+            {/* District field */}
+        <Form.Group controlId="district">
+          <Form.Label>District</Form.Label>
+          <Form.Control
+            as="select"
+            name="district"
+            value={formData.district || ''}
+            onChange={handleInputChange}
+          >
+            <option value="">Select your district</option>
+            {districts.map((district) => (
+              <option key={district} value={district}>
+                {district}
+              </option>
+            ))}
+          </Form.Control>
+          {errorMessages.district && <p className="text-danger">{errorMessages.district}</p>}
+        </Form.Group>
+
+        {/* Success and error messages */}
+        {errorMessages.server && <p className="text-danger">{errorMessages.server}</p>}
+        {successMessage && <p className="text-success">{successMessage}</p>}
           </>
         )}
 
@@ -251,6 +302,28 @@ function SignUp() {
               />
               {errorMessages.address && <p className="text-danger">{errorMessages.address}</p>}
             </Form.Group>
+            {/* District field */}
+        <Form.Group controlId="district">
+          <Form.Label>District</Form.Label>
+          <Form.Control
+            as="select"
+            name="district"
+            value={formData.district || ''}
+            onChange={handleInputChange}
+          >
+            <option value="">Select your district</option>
+            {districts.map((district) => (
+              <option key={district} value={district}>
+                {district}
+              </option>
+            ))}
+          </Form.Control>
+          {errorMessages.district && <p className="text-danger">{errorMessages.district}</p>}
+        </Form.Group>
+
+        {/* Success and error messages */}
+        {errorMessages.server && <p className="text-danger">{errorMessages.server}</p>}
+        {successMessage && <p className="text-success">{successMessage}</p>}
           </>
         )}
 

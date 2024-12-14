@@ -1,7 +1,7 @@
 import React from "react";
 
 function DonorInfo({ orphanages }) {
-  const donor = { name: "John Doe", phone: "1234567890" };
+  const donor = { name: "John Doe", contact: "1234567890" };
   const totalFulfilled = orphanages.reduce((acc, curr) => acc + (curr.fulfilled || 0), 0);
 
   return (
@@ -11,7 +11,7 @@ function DonorInfo({ orphanages }) {
       </div>
       <div className="donor-details">
         <h3>{donor.name}</h3>
-        <p>{donor.phone}</p>
+        <p>{donor.contact}</p>
         <p>
           Fulfilled:{" "}
           <span className="fulfilled">{totalFulfilled}</span>

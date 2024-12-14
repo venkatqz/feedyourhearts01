@@ -5,10 +5,13 @@ import { BrowserRouter } from 'react-router-dom';
 import Myrouter from './Myrouter';
 import React from 'react';
 import { useState,createContext } from "react";
+import Footer from './Comps/Footer';
 
 
 export const UserContext = createContext();
 function App() {
+
+  
   const [conuser,setUser]=useState(null);
 
   return (
@@ -18,6 +21,7 @@ function App() {
         <MyNav />
         
         <Myrouter />
+        <Footer></Footer>
 
       </BrowserRouter>
       </UserContext.Provider>

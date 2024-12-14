@@ -9,7 +9,7 @@ function ProtectedRoute({ children }) {
     const checkAuth = async () => {
       try {
         // Use an existing protected route for session validation
-        await axios.get("http://localhost:5000/api/protected-resource", {
+        await axios.get("http://localhost:5000/api/auth/protected-resource", {
           withCredentials: true, // Send cookies with the request
         });
       } catch (error) {

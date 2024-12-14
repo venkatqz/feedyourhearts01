@@ -2,6 +2,9 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User, Orphanage } = require('../models/User');
+const {FoodRequest,AuditLog}=require('../models/FoodRequest');
+
+
 
 const router = express.Router();
 const app = express();
@@ -52,6 +55,7 @@ const handleSignup = async (req, res, type) => {
       orphanageName,
       registrationNumber,
       authorizedPerson,
+      district,
       address,
     } = req.body;
 
@@ -80,6 +84,7 @@ const handleSignup = async (req, res, type) => {
         contact,
         aadharNumber,
         address,
+        district,
         type,
       });
       console.log(user);
@@ -97,6 +102,7 @@ const handleSignup = async (req, res, type) => {
         email,
         contact,
         address,
+        district,
         password: hashedPassword,
       });
       await orphanage.save();
@@ -214,6 +220,84 @@ router.get('/user-info', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+
+//req
+
+
+
+
+// Route to handle food request submission
+router.post("food-requests", async (req, res) => {
+  try {
+    const {
+
+      registrationNumber,
+      orphanageName,
+      contact,
+      address,
+      foodType,
+      foodRequired,
+      district,
+      dateTill,
+    } = req.body;
+    console.log("req received as ",req.body);
+    // Validate required fields
+    if (!registrationNumber || !orphanageName || !contact || !address || !foodType || !dateTill || !district) {
+      return res.status(400).json({ message: "All required fields must be filled." });
+    }
+
+    // Validate phone number
+    if (!/^\d{10}$/.test(contact)) {
+      return res.status(400).json({ message: "Invalid phone number. It must be 10 digits." });
+    }
+
+    // Validate `foodRequired` if `foodType` is "food"
+    if (foodType === "food" && (!foodRequired || isNaN(foodRequired))) {
+      return res.status(400).json({ message: "Food required must be a valid number." });
+    }
+
+    // Create a new food request
+    const newFoodRequest = new FoodRequest({
+      registerationNumber: registrationNumber,
+      orphanageName,
+      contact,
+      address,
+      foodType,
+      district,
+      foodRequired: foodType === "food" ? foodRequired : undefined, // Only include if `foodType` is "food"
+      dateTill,
+    });
+
+    // Save the request to the database
+    await newFoodRequest.save();
+
+    res.status(201).json({ message: "Food request submitted successfully!" });
+  } catch (error) {
+    console.error("Error handling food request submission:", error);
+    res.status(500).json({ message: "An error occurred while submitting the request. Please try again." });
+  }
+});
+
+
+// REQ list
+
+app.get("/request-list",authenticateToken,async (req, res) => {
+  try {
+    const orphanages = await FoodRequest.find();
+    
+    res.status(200).json(orphanages);
+  } catch (error) {
+    console.error("Error fetching orphanages:", error);
+    res.status(500).json({ message: "Error fetching data", error });
+  }
+});
+
+
+
+// Endpoint to accept a donation
+
 
 
 

@@ -11,7 +11,6 @@ function Login() {
   const [errorMessages, setErrorMessages] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
 
-  const { conUser, setUser } = useContext(UserContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,6 +29,8 @@ function Login() {
     e.preventDefault();
     if (validateForm()) {
       try {
+        console.log(formData);
+        
         const response = await axios.post(
           'http://localhost:5000/api/auth/login',
           formData,
@@ -39,12 +40,19 @@ function Login() {
         setSuccessMessage(response.data.message);
 
         const { userType } = response.data; // No need to manually store the token, it's in cookies now.
-        setUser(response.data);
+        console.log(response.data);
+        
+        
         //console.log(conUser,userType,response.data);
         
         // Redirect based on user type
+
+
         
         if (userType === 'orphanage' ) {
+          
+
+
           navigate('/food-reqform');
         } else if (userType === 'donor') {
           

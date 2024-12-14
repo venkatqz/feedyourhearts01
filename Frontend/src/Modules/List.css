@@ -57,6 +57,7 @@ body {
   border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
+  margin-right: 16px;
 }
 .orphanage {
   margin-bottom: 20px;
@@ -106,7 +107,8 @@ position: fixed;
 right: 0;
 top:0;
 
-/* height: 100%; */
+height: 100%;
+
 /* height: max-content; */
   background-color: #d3a6d6;
   padding: 20px;

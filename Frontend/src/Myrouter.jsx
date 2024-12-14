@@ -9,7 +9,8 @@ import OrphanageDashboard from './pages/OrphanageDashboard';
 import ProtectedRoute from './ProtectedRoute'; // Import ProtectedRoute
 import DonorDashboard from './pages/DonorDashboard';
 import ReqeustForm from './pages/RequestForm';
-import DonorView from './Modules/ReqList/DonorView'
+import DonorView from './Modules/DonorView';
+import OrphanageDetails from './Modules/OrphanageDetails'
 function Myrouter() {
   return (
     <Routes>
@@ -18,7 +19,7 @@ function Myrouter() {
       <Route path="/login" element={<Login />} />
       <Route path="/donation-form" element={<Donation_Form />} />
       <Route path="/food-reqform" element={<ReqeustForm></ReqeustForm>}></Route>
-
+      
       {/* Protect the OrphanageDashboard route */}
       <Route
         path="/OrphanageDashboard"
@@ -27,7 +28,9 @@ function Myrouter() {
             <OrphanageDashboard></OrphanageDashboard>
           </ProtectedRoute>}
       />
-      <Route path='/req-list' element={ <DonorView></DonorView> } > </Route>
+      <Route path='/orphanage-list' element={<DonorView />}></Route>
+      <Route path='/req-list' element={ <ProtectedRoute> <DonorView/> </ProtectedRoute>} > </Route>
+      <Route path='/details/:id' element={<OrphanageDetails></OrphanageDetails>}></Route>
 
     </Routes>
   );

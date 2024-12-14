@@ -1,8 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function OrphanageCard({ orphanage }) {
+function OrphanageCard(props) {
+
   const navigate = useNavigate();
+  const orphanage=props.orphanage;
+  console.log("props",props);
+  
 
   return (
     <div
@@ -14,6 +18,7 @@ function OrphanageCard({ orphanage }) {
           <p>{orphanage.district}</p>
           <p>{orphanage.foodType}</p>
         </div>
+        
       </div>
       <div className="details-row">
         <p>

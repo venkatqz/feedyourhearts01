@@ -4,30 +4,33 @@ const FoodRequest = require("../models/FoodRequest");
 const authenticate = require("./auth"); // Fixed import here
 
 // Route: Submit food request
-router.post("/req/food-requests", authenticate, async (req, res) => {
+router.post("/food-requests",authenticate , async (req, res) => {
   try {
+    console.log("Received data:", req.body);
     const {
-      orphanageId,
+      registrationNumber,
       orphanageName,
-      phoneNumber,
+      contact,
       address,
       foodType,
       foodRequired,
+      district,
       dateTill,
     } = req.body;
 
     // Validate required fields
-    if (!orphanageId || !orphanageName || !phoneNumber || !address || !foodType || !dateTill) {
+    if (!registrationNumber || !orphanageName || !contact || !address || !foodType || !dateTill || !district) {
       return res.status(400).json({ error: "All fields are required except foodRequired." });
     }
 
     // Create a new FoodRequest
     const newRequest = new FoodRequest({
-      orphanageId,
+      registrationNumber,
       orphanageName,
-      phoneNumber,
+      contact,
       address,
       foodType,
+      district,
       foodRequired: foodType === "food" ? foodRequired : undefined,
       dateTill,
     });

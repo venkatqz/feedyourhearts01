@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const foodRequestSchema = new mongoose.Schema(
   {
-    orphanageId: {
-      type: mongoose.Schema.Types.ObjectId,
+    registerationNumber: {
+      type: String,
       ref: "Orphanage",
       required: true,
     },
@@ -11,7 +11,7 @@ const foodRequestSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    phoneNumber: {
+    contact: {
       type: String,
       required: true,
       validate: {
@@ -36,6 +36,7 @@ const foodRequestSchema = new mongoose.Schema(
         return this.foodType === "food";
       },
     },
+    district:{type:String, required:true},
     dateTill: {
       type: Date,
       required: true,
@@ -44,4 +45,18 @@ const foodRequestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("FoodRequest", foodRequestSchema);
+const auditLogSchema = new mongoose.Schema(
+  { 
+    donor: { type: mongoose.Schema.Types.ObjectId, refPath: 'donorModel', required: true, },
+     donorModel: { type: String,
+       required: true, 
+       enum: ['User', 'Orphanage'],
+      },
+    receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'Orphanage', required: true, },
+     foodRequest: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodRequest', required: false, },
+      donationDetails: { type: String, required: true, },
+       date: { type: Date, default: Date.now,}});
+const FoodRequest = mongoose.model('FoodRequest',foodRequestSchema);
+
+const AuditLog = mongoose.model('AuditLog',auditLogSchema);
+ module.exports = { FoodRequest, AuditLog};
