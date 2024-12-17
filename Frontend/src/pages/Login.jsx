@@ -2,8 +2,9 @@ import React, { useState,useContext } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../Comps/login.css'
 import { UserContext } from '../App';
-
+import './form.css'
 function Login() {
   const navigate = useNavigate();
 
@@ -66,7 +67,7 @@ function Login() {
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 myform form-container">
       <h1>Login</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="loginEmail">

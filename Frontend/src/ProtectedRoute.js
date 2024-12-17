@@ -12,6 +12,8 @@ function ProtectedRoute({ children }) {
         await axios.get("http://localhost:5000/api/auth/protected-resource", {
           withCredentials: true, // Send cookies with the request
         });
+        console.log("Authenticated");
+        
       } catch (error) {
         console.error("Authentication error:", error.message);
         navigate("/login"); // Redirect to login if authentication fails

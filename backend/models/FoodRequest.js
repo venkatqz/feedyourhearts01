@@ -47,10 +47,10 @@ const foodRequestSchema = new mongoose.Schema(
 
 const auditLogSchema = new mongoose.Schema(
   { 
-    donor: { type: mongoose.Schema.Types.ObjectId, refPath: 'donorModel', required: true, },
+    donorId: { type: mongoose.Schema.Types.ObjectId, refPath: 'donorModel', required: true, },
      donorModel: { type: String,
        required: true, 
-       enum: ['User', 'Orphanage'],
+       enum: ['donor', 'orphanage'],
       },
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'Orphanage', required: true, },
      foodRequest: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodRequest', required: false, },

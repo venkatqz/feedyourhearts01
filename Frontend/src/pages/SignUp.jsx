@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import '../Comps/login.css'
+import './form.css'
 function SignUp() {
   const districts = [
     'Ariyalur', 'Chengalpattu', 'Chennai', 'Coimbatore', 'Cuddalore', 'Dharmapuri',
@@ -116,7 +117,7 @@ function SignUp() {
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 myform form-container">
       <h1>Sign Up</h1>
       <Form.Group as={Row} controlId="formTypeSelect">
         <Form.Label column sm="3">

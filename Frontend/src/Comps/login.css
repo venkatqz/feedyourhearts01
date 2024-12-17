@@ -15,4 +15,7 @@ body{
   .custom-navbar .nav-link:hover {
     color: #323028; /* Hover color for links */
   }
+  .myform{
+    width: 500px;
+  }
   

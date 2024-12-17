@@ -54,10 +54,10 @@ setuser(response.data.user  );
 
     const donorId = user._id; 
      const donorModel = user.type === 'orphanage' ? 'Orphanage' : 'donor'; // Determine donor model 
-     const recipientOrphanageId = data._id; // ID of the orphanage being donated to 
+     const recipientOrphanageId = data.registerationNumber; // ID of the orphanage being donated to 
      const foodRequestId = id; // Optional: ID of the food request being fulfilled 
      const donationDetails = `Donation made by ${user.name || user.orphanageName}`; // Example donation details 
-     console.log("THe donate data",donorId, donorModel, recipientOrphanageId, foodRequestId, donationDetails );
+     console.log("THe donate data donor id ",donorId, donorModel,"orph id ", recipientOrphanageId, "req id",foodRequestId, donationDetails );
      
      const response = await axios.post("http://localhost:5000/donate",
        { donorId, donorModel, recipientOrphanageId, foodRequestId, donationDetails },

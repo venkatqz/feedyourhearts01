@@ -5,6 +5,7 @@ function DonorInfo({ orphanages }) {
   const totalFulfilled = orphanages.reduce((acc, curr) => acc + (curr.fulfilled || 0), 0);
 
   return (
+    
     <div className="donor-info">
       <div className="greeting">
         <h1>Hi!</h1>

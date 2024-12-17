@@ -198,6 +198,11 @@ router.get('/protected-resource', authenticateToken, (req, res) => {
   });
 });
 
+router.post('/logout', (req, res) => { res.clearCookie('token'); // Clear the authentication token cookie 
+  res.status(200).json({ message: 'Logout successful' });
+}
+);
+
 
 router.get('/user-info', authenticateToken, async (req, res) => {
   try {

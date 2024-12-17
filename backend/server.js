@@ -100,6 +100,8 @@ app.get("/orphanages/:id", async (req, res) => {
 
 app.post('/donate', async (req, res) => {
   try {
+     console.log("req",req.body);
+    
     const { donorId, donorModel, recipientOrphanageId, foodRequestId, donationDetails } = req.body;
 
     // Validate required fields
@@ -108,19 +110,25 @@ app.post('/donate', async (req, res) => {
     }
 
     // Validate donorModel
-    if (!['User', 'Orphanage'].includes(donorModel)) {
+    if (!['donor', 'orphanage'].includes(donorModel)) {
       return res.status(400).json({ message: "Invalid donor model. Must be 'User' or 'Orphanage'." });
     }
+    const orphanage = await Orphanage.findOne({ registrationNumber:recipientOrphanageId });
+     if (!orphanage) { console.log("not found orphanage ");
+     return res.status(404).json({ message: "Orphanage not found."});}
+ 
 
     // Create a new audit log entry
     const newAuditLog = new AuditLog({
-      donor: donorId,
+     donorId,
       donorModel,
-      receiver: recipientOrphanageId,
+      receiver: orphanage._id,
       foodRequest: foodRequestId,
       donationDetails,
       
     });
+    console.log("scema ",newAuditLog);
+    
 
     // Save the audit log entry to the database
     await newAuditLog.save();

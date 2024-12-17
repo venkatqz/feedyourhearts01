@@ -18,7 +18,7 @@ function Footer() {
         const response=await axios.post('http://localhost:5000/api/auth/logout',
             { withCredentials: true }
         );
-        if (response.status === 200) { setUser(" "); navigate('/'); } // Redirect to home page  
+        if (response.status === 200) { setUser(null); navigate('/'); } // Redirect to home page  
         } catch (error) { 
             console.error("Error logging out:", error); 
             alert("Failed to log out. Please try again.");
