@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { UserContext } from "../../App";
 
 function DonationLogs({ logType }) {
+  const {conuser} =UserContext;
   const { id } = useParams();
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     const fetchLogs = async () => {
       try {
@@ -29,6 +31,7 @@ function DonationLogs({ logType }) {
   }, [logType, id]);
   console.log("log",logs);
 
+
   
 
   
@@ -46,7 +49,7 @@ function DonationLogs({ logType }) {
         <ul>
           {logs.map((log) => (
             <li key={log._id}>
-              {/* <p><strong>Donor:</strong> {log.donorId.name? log.donorId.name: log.donorId.orphanageName}</p> */}
+              <p><strong>Donor:</strong> {conuser.name}</p>
               <p><strong>Email:</strong> {log.donorId.email}</p>
               <p><strong>Contact:</strong> {log.donorId.contact}</p>
               <p><strong>Donation Details:</strong> {log.donationDetails}</p>

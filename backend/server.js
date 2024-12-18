@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser'); // Middleware for parsing cookies
 const authRoutes = require('./routes/auth');
-const freq=require('./routes/FoodRequest')
+const freq=require('./routes/FoodRequest');
+const cron = require('node-cron');
 const user =require('./routes/user-info');
 const authenticateToken=require('./routes/auth');
 const logs=require('./routes/logs');
@@ -215,6 +216,26 @@ app.get('/donor-donation-logs/:donorId', async (req, res) => {
   }
 });
 
+
+
+
+cron.schedule('* * * * *', async () => {
+  try {
+    console.log("Running cleanup job...");
+
+    // Get the current date and time
+    const now = new Date();
+
+    // Delete records where dateTill is earlier than the current time
+    const result = await FoodRequest.deleteMany({
+      dateTill: { $lt: now },
+    });
+
+    console.log(`Cleanup job completed. Deleted ${result.deletedCount} expired records.`);
+  } catch (error) {
+    console.error("Error during cleanup job:", error);
+  }
+});
 
 
 
