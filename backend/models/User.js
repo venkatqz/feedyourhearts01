@@ -18,7 +18,6 @@ const orphanageSchema = new mongoose.Schema({
   registrationNumber: { 
     type: String, 
     required: true, 
-    unique: true,
     match: [/^TN\/DSD\/\d{4}\/[A-Z0-9]{4,6}$/, 'Invalid registration number format. Expected: TN/DSD/YYYY/XXXXXX'],
   },
   authorizedPerson: { type: String, required: true },
@@ -31,6 +30,7 @@ const orphanageSchema = new mongoose.Schema({
 });
 
 // Export Models
+const Donor=mongoose.model('donor',userSchema);
 const User = mongoose.model('User', userSchema);
 const Orphanage = mongoose.model('Orphanage', orphanageSchema);
 

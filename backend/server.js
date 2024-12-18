@@ -7,9 +7,10 @@ const authRoutes = require('./routes/auth');
 const freq=require('./routes/FoodRequest')
 const user =require('./routes/user-info');
 const authenticateToken=require('./routes/auth');
+const logs=require('./routes/logs');
 const app = express();
-const {FoodRequest,AuditLog}=require('./models/FoodRequest');
-const {User,Orphanage}=require('./models/User');
+const {FoodRequest,AuditLog,DonatedRequest}=require('./models/FoodRequest');
+const {donor,User,Orphanage}=require('./models/User');
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000', credentials: true })); // Update origin for frontend URL
 app.use(bodyParser.json());
@@ -97,6 +98,26 @@ app.get("/orphanages/:id", async (req, res) => {
 
 
 
+// app.post('/donate', async (req, res) => { 
+//   try { 
+//     const { donorId, donorModel, recipientOrphanageId, foodRequestId, donationDetails } = req.body; 
+//     console.log("Received payload:", req.body); // Validate required fields 
+//     if (!donorId || !donorModel || !recipientOrphanageId || !donationDetails) {
+//        console.log("Validation error: Missing required fields"); 
+//        return res.status(400).json({ message: "All fields are required." }); } // Validate donorModel 
+//        if (!['user', 'orphanage'].includes(donorModel)) { 
+//         console.log("Validation error: Invalid donor model");
+//          return res.status(400).json({ message: "Invalid donor model. Must be 'User' or 'Orphanage'." }); } // Lookup orphanage by registrationNumber 
+//          const orphanage = await Orphanage.findOne({ registrationNumber: recipientOrphanageId }); 
+//          if (!orphanage) { console.log("Orphanage not found."); 
+//           return res.status(404).json({ message: "Orphanage not found." }); } // Lookup food request 
+//           const foodRequest = await FoodRequest.findById(foodRequestId); if (!foodRequest) { console.log("Food request not found."); return res.status(404).json({ message: "Food request not found." }); } // Create a new audit log entry 
+//           const newAuditLog = new AuditLog({ donorId: donorId, // Ensure this matches schema
+//              donorModel, receiver: orphanage._id, foodRequest: foodRequestId, donationDetails, }); console.log("Audit log to be saved:", newAuditLog); // Save the audit log entry to the database 
+//              await newAuditLog.save(); // Move the food request to the DonatedRequest collection 
+//              const donatedRequest = new DonatedRequest({ ...foodRequest.toObject(), donationDetails, }); console.log("Donated request to be saved:", donatedRequest); await donatedRequest.save(); // Remove the food request from the FoodRequest collection 
+//              await FoodRequest.findByIdAndRemove(foodRequestId); res.status(201).json({ message: "Donation recorded successfully!" }); } catch (error) { console.error("Error recording donation:", error); res.status(500).json({ message: "An error occurred while recording the donation. Please try again." }); } }); 
+
 
 app.post('/donate', async (req, res) => {
   try {
@@ -117,7 +138,13 @@ app.post('/donate', async (req, res) => {
      if (!orphanage) { console.log("not found orphanage ");
      return res.status(404).json({ message: "Orphanage not found."});}
  
+      console.log(orphanage);
 
+      const foodRequest = await FoodRequest.findById(foodRequestId); if (!foodRequest) { console.log("Food request not found."); return res.status(404).json({ message: "Food request not found." });}  
+      console.log("food req  found in bg",foodRequest.toObject());
+      
+
+      
     // Create a new audit log entry
     const newAuditLog = new AuditLog({
      donorId,
@@ -129,9 +156,18 @@ app.post('/donate', async (req, res) => {
     });
     console.log("scema ",newAuditLog);
     
-
     // Save the audit log entry to the database
     await newAuditLog.save();
+    var receiver=orphanage._id;
+    var district=orphanage.district;
+    console.log("receiver",receiver);
+    
+    const donatedRequest = new DonatedRequest({ ...foodRequest.toObject(),receiver, district,donationDetails, });
+    console.log("donated food ",donatedRequest);
+    
+    await donatedRequest.save();
+    await FoodRequest.findByIdAndDelete(foodRequestId);
+    
 
     res.status(201).json({ message: "Donation recorded successfully!" });
   } catch (error) {
@@ -140,8 +176,44 @@ app.post('/donate', async (req, res) => {
   }
 });
 
+app.get('/orphanage-donation-logs/:orphanageId', async (req, res) => {
+  try {
+    const { orphanageId } = req.params;
+
+    const logs = await AuditLog.find({ receiver: orphanageId })
+      .populate('donorId', 'name email contact') // Populate donor information
+      .populate('foodRequest', 'foodType foodRequired address dateTill') // Populate food request information
+      .populate('receiver', 'orphanageName registrationNumber'); // Populate orphanage information
+
+    res.status(200).json(logs);
+  } catch (error) {
+    console.error("Error retrieving orphanage donation logs:", error);
+    res.status(500).json({ message: "An error occurred while retrieving donation logs. Please try again." });
+  }
+});
 
 
+app.get('/donor-donation-logs/:donorId', async (req, res) => {
+  console.log("fetching logs ");
+  
+  try {
+    const { donorId } = req.params;
+
+    const logs = await AuditLog.find({ donorId })
+      // .populate('donorId', 'name email contact') // Populate donor information
+      // .populate('foodRequest', 'foodType foodRequired address dateTill') // Populate food request information
+      // .populate('receiver', 'orphanageName registrationNumber'); // Populate orphanage information
+
+      console.log("logs ",logs);
+    res.status(200).json(logs);
+    
+    
+    
+  } catch (error) {
+    console.error("Error retrieving donor donation logs:", error);
+    res.status(500).json({ message: "An error occurred while retrieving donation logs. Please try again." });
+  }
+});
 
 
 
@@ -153,6 +225,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/req',freq);
 app.use('/user',user);
+app.use('/logs',logs);
 
 
 

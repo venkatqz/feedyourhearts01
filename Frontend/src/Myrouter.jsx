@@ -10,7 +10,8 @@ import ProtectedRoute from './ProtectedRoute'; // Import ProtectedRoute
 import DonorDashboard from './pages/DonorDashboard';
 import ReqeustForm from './pages/RequestForm';
 import DonorView from './Modules/DonorView';
-import OrphanageDetails from './Modules/OrphanageDetails'
+import OrphanageDetails from './Modules/OrphanageDetails';
+import DonationLogs from './Modules/logs/DonationLogs';
 function Myrouter() {
   return (
     <Routes>
@@ -31,7 +32,10 @@ function Myrouter() {
       <Route path='/orphanage-list' element={<DonorView />}></Route>
       <Route path='/req-list' element={ <ProtectedRoute> <DonorView/> </ProtectedRoute>} > </Route>
       <Route path='/details/:id' element={<OrphanageDetails></OrphanageDetails>}></Route>
-
+      <Route path='/req-list/:msg' element={ <ProtectedRoute> <DonorView/> </ProtectedRoute>} > </Route>
+      <Route path="/details/:id" element={<DonationLogs logType="orphanage" />} />
+       <Route path="/orphanage-logs/:id" element={<DonationLogs logType="orphanage" />} />
+        <Route path="/donor-logs/:id" element={<DonationLogs logType="donor" />}/>
     </Routes>
   );
 }

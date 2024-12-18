@@ -4,18 +4,36 @@ import FilterBar from "./FilterBar";
 import OrphanageCard from "./OrphanageCard";
 import DonorInfo from "./DonorInfo";
 import "./List.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from '../App';
 function OrphanageList() {
   const navigate=useNavigate();
   const { conuser, setUser } = useContext(UserContext);
 
+  const { msg } = useParams(); // Extract 'msg' from route params
+  const [displayMessage, setDisplayMessage] = useState("");
+  console.log(msg);
+  
   const [orphanages, setOrphanages] = useState([]);
   const [filteredOrphanages, setFilteredOrphanages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("");
 
+  useEffect(() => {
+    // Set the message in the state
+    if (msg) {
+      setDisplayMessage(msg);
+
+      // Clear the message after 2 seconds
+      const timer = setTimeout(() => {
+        setDisplayMessage(""); // Clear the message
+      }, 2000);
+
+      // Clean up the timer when the component unmounts
+      return () => clearTimeout(timer);
+    }
+  }, [msg]);
 
     useEffect(() => {
       
@@ -26,42 +44,60 @@ function OrphanageList() {
             withCredentials: true,
           });
           console.log("reesponse of user user-info",response);
+
           
-          // const { registrationNumber, orphanageName, contact, address,district } = response.data.user;
-          const { _id,name,
-          email,
-          password,
-          contact,
-          aadharNumber, 
-          address,
-          district,
-          type:userType}=response.data.user;
-          console.log("fetched user info gonna save in conuser");
+        //   if(response.data.user=='donor'){
+        //   // const { registrationNumber, orphanageName, contact, address,district } = response.data.user;
+        //   const { _id,name,
+        //   email,
+        //   password,
+        //   contact,
+        //   aadharNumber, 
+        //   address,
+        //   district,
+        //   type:userType}=response.data.user;
+        //   console.log("fetched user info gonna save in conuser");
+
+        //   setUser({_id,name,
+        //     email,
+        //     password,
+        //     contact,
+        //     aadharNumber, 
+        //     address,
+        //     district,
+        //     userType});
+        
+        
+        // }
+        // else{
+        //   const {address,
+        //     authorizedPerson,
+        //     contact,
+        //     district,
+        //     email,
+        //     orphanageName,
+        //     registrationNumber,
+        //     userType
+        // }=response.data.user;
           
-  
+        // setUser({address,
+        //   authorizedPerson,
+        //   contact,
+        //   district,
+        //   email, 
+        //   orphanageName,
+        //   registrationNumber,
+        //   userType});
           
-          console.log("destructured data",  _id,name,
-            email,
-            password,
-            contact,
-            aadharNumber, 
-            address,
-            district,
-          userType);
           
-          console.log(response.data);
+          
+        //   console.log(response.data);
          
-          setUser({name,
-            email,
-            password,
-            contact,
-            aadharNumber, 
-            address,
-            district,
-            userType});
-          console.log("Conuser after saving",conuser);
+
+        //   console.log("Conuser after saving",conuser);
+        // }
           
-          
+          setUser(response.data.user);
       
 
         } catch (error) {
@@ -118,6 +154,11 @@ function OrphanageList() {
           setFilterType={setFilterType}
           applyFilters={applyFilters}
         />
+        {displayMessage && (
+        <div style={{ padding: "5px", backgroundColor: "#e0f7fa" }}>
+          <h3>{displayMessage}</h3>
+        </div>
+      )}
         <div className="donation-list">
           {filteredOrphanages.length > 0 ? (
             filteredOrphanages.map((orphanage) => (

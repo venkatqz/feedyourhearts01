@@ -3,8 +3,10 @@ import { useParams } from "react-router-dom"; // Import useParams
 import "./Orphanagedetail.css";
 import axios from "axios";
 import { UserContext } from '../App';
-
+import { useNavigate } from "react-router-dom";
 const OrphanageDetails = () => {
+  const navigate=useNavigate();
+
 const [user,setuser]=useState('');
   const[Donated,setDonated]=useState("");
   const { id } = useParams(); // Extract the ID from the route
@@ -53,7 +55,7 @@ setuser(response.data.user  );
     console.log("user",user);
 
     const donorId = user._id; 
-     const donorModel = user.type === 'orphanage' ? 'Orphanage' : 'donor'; // Determine donor model 
+     const donorModel = user.type === 'orphanage' ? 'orphanage' : 'donor'; // Determine donor model 
      const recipientOrphanageId = data.registerationNumber; // ID of the orphanage being donated to 
      const foodRequestId = id; // Optional: ID of the food request being fulfilled 
      const donationDetails = `Donation made by ${user.name || user.orphanageName}`; // Example donation details 
@@ -63,6 +65,8 @@ setuser(response.data.user  );
        { donorId, donorModel, recipientOrphanageId, foodRequestId, donationDetails },
         { withCredentials: true }); 
         if (response.status === 201) {
+          navigate("/req-list/ Succefully Donated ! ");
+          
            setDonated("Thank you for your generosity!"); } 
       } catch (error) {
          console.error("Error making donation:", error);
